@@ -4,10 +4,10 @@ public class Program
 {
     public static void Main()
     {
-        var factory = new SimplePizzaFactory();
-        var factory1 = new SimplePizzaFactory();
+        var shop = new PizzaStore(new ShitPizzaFactory(new MosPizzaIngredientFactory()));
+        var smt = shop.OrderPizza("asd");
 
-        var mosPizza = new PizzaStore(factory);
-        var chelPizza = new PizzaStore(factory1);
+        var localShop = new MosPizzaStore(new MosPizzaIngredientFactory());
+        var smt2 = localShop.OrderPizza("asd");
     }
 }

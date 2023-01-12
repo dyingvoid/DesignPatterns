@@ -1,97 +1,79 @@
 ﻿namespace DesignPatterns;
 
-public interface IPizza
+public abstract class Pizza
 {
-    public void Prepare();
-}
+    public abstract string Name { get; }
 
-public class CheesePizza : IPizza
-{
     public void Prepare()
     {
         
     }
 }
 
-public class MeatPizza : IPizza
-{
-    public void Prepare()
-    {
-        
-    }
+public class ShitPizza : Pizza
+{ 
+    public override string Name => "Shit";
 }
 
-public class ShitPizza : IPizza
+public class CheesePizza : Pizza
 {
-    public void Prepare()
-    {
-        
-    }
+    public override string Name => "Cheese";
 }
 
-public interface ISimplePizzaFactory
+public class SimplePizzaFactory
 {
-    public abstract IPizza CreatePizza(string type);
-}
-
-public class CoolPizzaFactory : ISimplePizzaFactory
-{
-    public  IPizza CreatePizza(string type)
+    public Pizza CreatePizza(string type)
     {
-        IPizza pizza;
-
         if (type == "Cheese")
-        {
-            pizza = new CheesePizza();
-        }
-        else
-        {
-            pizza = new MeatPizza();
-        }
-
-        return pizza;
+            return new CheesePizza();
+        
+        return new ShitPizza();
     }
 }
 
-public class ShitPizzaFactory : ISimplePizzaFactory
+public class PizzaStore
 {
-    public IPizza CreatePizza(string type)
-    {
-        IPizza pizza = new ShitPizza();
+    private SimplePizzaFactory _factory;
 
-        return pizza;
-    }
-}
-
-public abstract class PizzaStore
-{
-    private ISimplePizzaFactory _factory;
-
-    public PizzaStore(ISimplePizzaFactory factory)
+    public PizzaStore(SimplePizzaFactory factory)
     {
         _factory = factory;
     }
 
-    public IPizza OrderPizza(string type)
+    public Pizza OrderPizza(string type)
     {
-
-        IPizza pizza = _factory.CreatePizza(type);
+        var pizza = _factory.CreatePizza(type);
         pizza.Prepare();
 
         return pizza;
     }
 }
 
-public class ChelPizza : PizzaStore
+public abstract class LocalizedPizzaStore
 {
-    public ChelPizza(ISimplePizzaFactory factory) : base(factory)
+    public Pizza OrderPizza(string type)
     {
-        
+        Pizza pizza = CreatePizza(type);
+        pizza.Prepare();
+
+        return pizza;
     }
 
-    public IPizza OrderPizza(string type)
+    protected abstract Pizza CreatePizza(string type);
+}
+
+public class ChelPizzaStore : LocalizedPizzaStore
+{
+    protected override Pizza CreatePizza(string type)
+    {
+        return new CheesePizza();
+    }
+}
+
+public class MosPizzaStore : LocalizedPizzaStore
+{
+    protected override Pizza CreatePizza(string type)
     {
         return new ShitPizza();
     }
 }
-

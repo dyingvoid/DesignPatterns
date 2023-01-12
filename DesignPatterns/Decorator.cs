@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-
-namespace DesignPatterns;
+﻿namespace DesignPatterns;
 
 public class Drink
 {
